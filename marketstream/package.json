@@ -1,0 +1,26 @@
+{
+  "name": "marketstream",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "pnpm -r --if-present run build",
+    "dev": "pnpm -r --parallel --if-present run dev",
+    "lint": "pnpm -r --if-present run lint",
+    "test": "pnpm -r --if-present run test",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "infra:logs": "docker compose logs -f"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.24.0",
+  "devDependencies": {
+    "@types/node": "^26.3.0",
+    "eslint": "^10.9.1",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
+  }
+}
