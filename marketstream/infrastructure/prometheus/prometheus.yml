@@ -1,0 +1,20 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: ingestion
+    static_configs:
+      - targets: ["host.docker.internal:9101"]
+  - job_name: processor
+    static_configs:
+      - targets: ["host.docker.internal:9102"]
+  - job_name: api
+    static_configs:
+      - targets: ["host.docker.internal:9103"]
+  - job_name: websocket
+    static_configs:
+      - targets: ["host.docker.internal:9104"]
+  - job_name: alert-worker
+    static_configs:
+      - targets: ["host.docker.internal:9105"]

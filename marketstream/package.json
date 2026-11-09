@@ -5,22 +5,37 @@
   "scripts": {
     "build": "pnpm -r --if-present run build",
     "dev": "pnpm -r --parallel --if-present run dev",
+    "dev:services": "pnpm --filter @marketstream/ingestion --filter @marketstream/processor --filter @marketstream/api --filter @marketstream/websocket --filter @marketstream/alert-worker --filter @marketstream/simulator --parallel run dev",
     "lint": "pnpm -r --if-present run lint",
     "test": "pnpm -r --if-present run test",
     "typecheck": "pnpm -r --if-present run typecheck",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
-    "infra:logs": "docker compose logs -f"
+    "infra:logs": "docker compose logs -f",
+    "topics": "tsx scripts/create-topics.ts",
+    "migrate": "tsx scripts/migrate.ts",
+    "seed": "tsx scripts/seed.ts",
+    "bootstrap": "pnpm topics && pnpm migrate && pnpm seed",
+    "benchmark": "tsx scripts/benchmark.ts"
   },
   "engines": {
     "node": ">=22"
   },
   "packageManager": "pnpm@11.24.0",
+  "dependencies": {
+    "@marketstream/config": "workspace:*",
+    "@marketstream/database": "workspace:*",
+    "@marketstream/kafka": "workspace:*",
+    "@marketstream/logger": "workspace:*",
+    "@marketstream/redis": "workspace:*",
+    "@marketstream/schemas": "workspace:*",
+    "kafkajs": "^2.2.4"
+  },
   "devDependencies": {
-    "@types/node": "^26.3.0",
-    "eslint": "^10.9.1",
+    "@types/node": "^22.19.1",
+    "eslint": "^9.39.1",
     "prettier": "^3.9.6",
     "tsx": "^4.23.12",
-    "typescript": "^7.0.2"
+    "typescript": "^5.9.3"
   }
 }
