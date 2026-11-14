@@ -12,17 +12,32 @@ Real-time market data platform: simulator → ingestion → Kafka → processor 
 
 ## Quick start
 
+Run from the `marketstream/` directory inside the repository (Node 22+ and pnpm required).
+
 ```bash
 cp .env.example .env
 pnpm install
-pnpm --filter @marketstream/schemas... build
+pnpm build:packages
 pnpm infra:up
+# Wait for dependencies to report healthy: docker compose ps
 pnpm bootstrap
 pnpm dev:services
+```
+
+In a second terminal, from the same directory:
+
+```bash
 pnpm --filter @marketstream/web dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+The defaults work locally. For custom settings, export backend variables in your
+shell; the backend does not automatically load `.env`. Put dashboard overrides in
+`apps/web/.env.local`.
+
+Run `pnpm build`, `pnpm typecheck`, and `pnpm test` to verify changes. See
+[reliability notes](docs/reliability.md) for the current limitations and next work.
 
 ## Services
 

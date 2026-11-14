@@ -16,7 +16,8 @@
     "migrate": "tsx scripts/migrate.ts",
     "seed": "tsx scripts/seed.ts",
     "bootstrap": "pnpm topics && pnpm migrate && pnpm seed",
-    "benchmark": "tsx scripts/benchmark.ts"
+    "benchmark": "tsx scripts/benchmark.ts",
+    "build:packages": "pnpm --filter './packages/**' run build"
   },
   "engines": {
     "node": ">=22"

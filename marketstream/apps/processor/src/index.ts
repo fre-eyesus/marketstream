@@ -8,7 +8,6 @@ import {
   createConsumer,
   createKafkaClient,
   createProducer,
-  parseJsonMessage,
   runConsumer,
   sendJson,
   TOPICS,
@@ -22,7 +21,7 @@ import {
   RedisKeys,
 } from "@marketstream/redis";
 import type { Bar, Tick } from "@marketstream/schemas";
-import { TickSchema } from "@marketstream/schemas";
+import { createTickHandler } from "./tick-handler.js";
 import { DEFAULT_BAR_INTERVAL } from "@marketstream/shared";
 
 const config = loadConfig();
@@ -154,18 +153,13 @@ async function main(): Promise<void> {
   startMetricsServer(metrics, 9102);
   log.info("Processor started");
 
-  await runConsumer(consumer, async (payload) => {
-    const raw = parseJsonMessage<unknown>(payload);
-    if (!raw) return;
-    try {
-      const tick = TickSchema.parse(raw);
-      await handleTick(tick, producer, db, redis);
-    } catch (error) {
-      log.warn("Failed to process tick", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    }
-  });
+  await runConsumer(
+    consumer,
+    createTickHandler(
+      (tick) => handleTick(tick, producer, db, redis),
+      (error) => log.warn("Skipping invalid tick", { error: error.message })
+    )
+  );
 
   const shutdown = async () => {
     log.info("Shutting down processor");

@@ -7,6 +7,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml tsconfig.base.json ./
 COPY packages ./packages
 COPY apps/processor ./apps/processor
 RUN pnpm install --frozen-lockfile
+RUN pnpm build:packages
 
 FROM deps AS runner
 WORKDIR /app/apps/processor
